@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GGOGI YEON — Korean BBQ in Melbourne. Premium cuts, charcoal-grilled at your table.">
+  <title>GGOGI YEON — Korean BBQ Melbourne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── VARIABLES ─── */
+    :root {
+      --black:   #080808;
+      --black-2: #111111;
+      --black-3: #1c1c1c;
+      --white:   #f5f5f3;
+      --dim:     #888884;
+      --faint:   rgba(245,245,243,0.06);
+      --border:  rgba(245,245,243,0.1);
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --sans:    'Inter', sans-serif;
+      --kr:      'Noto Sans KR', sans-serif;
+      --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-out:cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+    .hidden { display: none !important; }
+
+    /* Film grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.032;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── TYPOGRAPHY ─── */
+    h1,h2,h3,h4 { font-family: var(--serif); font-weight: 300; line-height: 1.05; }
+    .label {
+      font-family: var(--sans);
+      font-size: 0.63rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .divider {
+      width: 36px;
+      height: 1px;
+      background: var(--dim);
+      margin: 1.25rem 0;
+    }
+
+    /* ─── PAGE LOADER ─── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.7s var(--ease), visibility 0.7s;
+    }
+    .loader.out { opacity: 0; visibility: hidden; }
+    .loader__inner {
+      overflow: hidden;
+      line-height: 1;
+    }
+    .loader__word {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      display: block;
+      animation: slideUp 1s var(--ease-out) forwards;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 1.6rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.5s var(--ease), padding 0.4s var(--ease), border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 1rem 2.5rem;
+      border-color: var(--border);
+    }
+    .nav__logo {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
+    }
+    .nav__logo em { font-style: italic; color: var(--dim); }
+    .nav__links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--white);
+      transition: color 0.3s;
+    }
+    .nav__links a:hover { color: #c0392b; }
+    .nav__cta {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.3rem;
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav__cta:hover { background: #c0392b; color: var(--white); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 4px;
+      z-index: 600;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--white);
+      transition: transform 0.3s var(--ease), opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Mobile overlay */
+    .nav__overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 400;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .nav__overlay.open { display: flex; }
+    .nav__overlay a {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: navItemIn 0.5s var(--ease-out) forwards;
+    }
+    .nav__overlay a:nth-child(1) { animation-delay: 0.05s; }
+    .nav__overlay a:nth-child(2) { animation-delay: 0.12s; }
+    .nav__overlay a:nth-child(3) { animation-delay: 0.19s; }
+    .nav__overlay a:nth-child(4) { animation-delay: 0.26s; }
+    @keyframes navItemIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      height: 100dvh;
+      min-height: 620px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 2.5rem 4.5rem;
+      overflow: hidden;
+    }
+
+    /* BG layer — swap placeholder div with <video> or <img> */
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* ──────────────────────────────────────────
+       PLACEHOLDER — delete this div and replace
+       with your video or image element:
+
+       VIDEO:
+         <video class="hero__media" autoplay muted loop playsinline>
+           <source src="hero.mp4" type="video/mp4">
+         </video>
+
+       IMAGE:
+         <img class="hero__media" src="hero.jpg" alt="">
+
+       .hero__media styles are below, ready to go.
+    ────────────────────────────────────────── */
+    .hero__ph {
+      width: 100%; height: 100%;
+      background: linear-gradient(155deg, #181818 0%, #0d0d0d 45%, #080808 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 6px;
+      border: 1px dashed rgba(255,255,255,0.07);
+    }
+    .hero__media {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0; z-index: 1;
+      background:
+        linear-gradient(to bottom, rgba(8,8,8,0.65) 0%, transparent 18%),
+        linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.15) 100%);
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Hero text — hidden until loader exits */
+    .hero__eyebrow,
+    .hero__title,
+    .hero__sub,
+    .hero__cta {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    .hero-in .hero__eyebrow { opacity:1; transform:none; transition-delay:0.05s; }
+    .hero-in .hero__title   { opacity:1; transform:none; transition-delay:0.2s;  }
+    .hero-in .hero__sub     { opacity:1; transform:none; transition-delay:0.35s; }
+    .hero-in .hero__cta     { opacity:1; transform:none; transition-delay:0.5s;  }
+
+    .hero__eyebrow { margin-bottom: 1.2rem; }
+    .hero__title {
+      font-size: clamp(4rem, 11vw, 10rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 0.88;
+      margin-bottom: 1.75rem;
+    }
+    .hero__title em { font-style: italic; color: var(--dim); }
+    .hero__sub {
+      font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+      color: var(--dim);
+      max-width: 360px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Buttons */
+    .hero__cta { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: all 0.3s var(--ease);
+      border: none;
+      background: none;
+      color: var(--white);
+    }
+    .btn-fill {
+      background: var(--white);
+      color: var(--black);
+      padding: 0.9rem 2.2rem;
+    }
+    .btn-fill:hover { background: #c0392b; color: var(--white); }
+    .btn-line {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(245,245,243,0.3);
+    }
+    .btn-line:hover { border-color: var(--white); }
+
+    /* Scroll indicator */
+    .hero__scroll {
+      position: absolute;
+      right: 2.5rem; bottom: 2.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .hero__scroll-bar {
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, rgba(245,245,243,0.5), transparent);
+      animation: scrollPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%  { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      49% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      50% { transform-origin: bottom; }
+      100%{ transform: scaleY(0); transform-origin: bottom; opacity: 0.3; }
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 9rem 2.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section__head { margin-bottom: 4rem; }
+    .section__title {
+      font-size: clamp(2.4rem, 5vw, 5rem);
+      font-weight: 300;
+    }
+    .section__title em { font-style: italic; color: var(--dim); }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(38px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.12s; }
+    .d2 { transition-delay: 0.24s; }
+    .d3 { transition-delay: 0.36s; }
+    .d4 { transition-delay: 0.48s; }
+
+    /* ─── STORY ─── */
+    #story { border-top: 1px solid var(--border); }
+    .story__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7rem;
+      align-items: center;
+    }
+    .story__img {
+      aspect-ratio: 3/4;
+      background: var(--black-3);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Replace inner div with <img src="..." class="hero__media"> */
+    .story__img-ph {
+      width:100%; height:100%;
+      min-height: 400px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:6px;
+      border: 1px dashed rgba(255,255,255,0.07);
+    }
+    .story__text p {
+      font-size: 1rem;
+      color: var(--dim);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+    .story__quote {
+      font-family: var(--serif);
+      font-size: 1.65rem;
+      font-style: italic;
+      line-height: 1.45;
+      border-left: 1px solid var(--dim);
+      padding-left: 1.5rem;
+      margin: 2.5rem 0;
+    }
+
+    /* ─── PILLARS ─── */
+    #pillars {
+      background: var(--black-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .pillars__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .pillar {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/2;
+      border: 1px solid var(--border);
+    }
+    .pillar img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      max-width: none;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.8s var(--ease);
+    }
+    .pillar:hover img { transform: scale(1.05); }
+
+    .pillar__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(8,8,8,0.75) 0%,
+        rgba(8,8,8,0.05) 40%,
+        transparent 60%
+      );
+      transition: background 0.45s var(--ease);
+    }
+    .pillar:hover .pillar__overlay {
+      background: linear-gradient(
+        to top,
+        rgba(8,8,8,0.92) 0%,
+        rgba(8,8,8,0.5) 55%,
+        rgba(8,8,8,0.15) 100%
+      );
+    }
+
+    .pillar__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.75rem 2rem;
+    }
+    .pillar__num {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--dim);
+      margin-bottom: 0.4rem;
+      opacity: 0;
+      transition: opacity 0.35s var(--ease);
+    }
+    .pillar:hover .pillar__num { opacity: 1; }
+
+    .pillar__title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .pillar__desc {
+      font-size: 0.82rem;
+      color: rgba(245,245,243,0.75);
+      line-height: 1.72;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-top: 0;
+      transition: max-height 0.5s var(--ease), opacity 0.4s 0.05s var(--ease), margin-top 0.4s var(--ease);
+    }
+    .pillar:hover .pillar__desc {
+      max-height: 6rem;
+      opacity: 1;
+      margin-top: 0.75rem;
+    }
+
+    /* ─── MENU ─── */
+    #menu { border-top: 1px solid var(--border); }
+    .menu__tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .menu__tab {
+      font-size: 0.66rem;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--dim);
+      transition: all 0.3s;
+    }
+    .menu__tab:hover,
+    .menu__tab.active {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .menu__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .menu__item {
+      background: var(--black);
+      padding: 2rem 1.75rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transition: background 0.3s;
+    }
+    .menu__item:hover { background: var(--black-2); }
+    .menu__thumb {
+      width: 76px; height: 76px;
+      flex-shrink: 0;
+      background: var(--black-3);
+      border: 1px dashed rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .menu__thumb span { font-size: 0.48rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.18); text-align:center; }
+    .menu__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .menu__info { flex: 1; min-width: 0; }
+    .menu__name {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 0.15rem;
+    }
+    .menu__kr {
+      font-family: var(--kr);
+      font-size: 0.72rem;
+      color: var(--dim);
+      margin-bottom: 0.5rem;
+    }
+    .menu__desc { font-size: 0.78rem; color: var(--dim); line-height: 1.65; }
+    .menu__price {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery {
+      background: var(--black-2);
+      border-top: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .gallery__head {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .gallery__ig-icon {
+      width: 30px; height: 30px;
+      flex-shrink: 0;
+      color: var(--white);
+      opacity: 0.9;
+      position: relative;
+      top: 2px;
+    }
+
+    /* ── Accordion ── */
+    .gallery__accordion {
+      position: relative;
+      height: 640px;
+      margin-top: 3rem;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /*
+      Math: container=1200px, panel=360px (9:16 at 640px height: 640×9/16=360)
+      Strip per panel = (1200-360)/4 = 210px
+      Positions: 0, 210, 420, 630, 840 → panel5 right edge: 840+360=1200 ✓
+    */
+    .gallery__panel {
+      position: absolute;
+      width: 360px;
+      height: 640px;
+      overflow: hidden;
+      background: var(--black-3);
+      cursor: pointer;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1), filter 0.4s;
+    }
+    .gallery__panel:nth-child(1) { left: 0px;   z-index: 1; }
+    .gallery__panel:nth-child(2) { left: 210px; z-index: 2; }
+    .gallery__panel:nth-child(3) { left: 420px; z-index: 3; }
+    .gallery__panel:nth-child(4) { left: 630px; z-index: 4; }
+    .gallery__panel:nth-child(5) { left: 840px; z-index: 5; }
+
+    /* right-edge shadow for depth/overlap feel */
+    .gallery__panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset -12px 0 28px rgba(0,0,0,0.65);
+      pointer-events: none;
+      z-index: 4;
+      transition: opacity 0.4s;
+    }
+    .gallery__panel:hover::after { opacity: 0; }
+
+    .gallery__panel img,
+    .gallery__panel-ph {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: left top; /* show top-left = profile area of story */
+    }
+    .gallery__panel-ph {
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-start;
+      padding: 1rem; gap: 5px;
+    }
+
+    /* Dim non-hovered */
+    .gallery__accordion:hover .gallery__panel:not(:hover) {
+      filter: brightness(0.28);
+    }
+
+    /* Hover: z-index up + subtle width expansion (9:16 maintained) */
+    .gallery__panel:hover {
+      width: 395px;
+      filter: brightness(1.05);
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .gallery__accordion { height: auto; overflow: visible; }
+      .gallery__panel {
+        position: relative !important;
+        left: auto !important;
+        width: 100% !important;
+        height: 260px;
+        z-index: 1 !important;
+        filter: brightness(1) !important;
+        margin-bottom: 3px;
+        display: block;
+      }
+      .gallery__panel::after { display: none; }
+    }
+
+    /* ─── RESERVATION ─── */
+    #reservation {
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .res__inner { max-width: 680px; margin: 0 auto; }
+    .res__title {
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+    }
+    .res__title em { font-style: italic; color: var(--dim); }
+    .res__sub {
+      font-size: 0.9rem;
+      color: var(--dim);
+      line-height: 1.75;
+      margin-bottom: 3rem;
+    }
+    .res__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1.15rem 3rem;
+      border: 1px solid rgba(245,245,243,0.5);
+      color: var(--white);
+      background: none;
+      transition: all 0.4s var(--ease);
+    }
+    .res__btn:hover { background: #c0392b; color: var(--white); border-color: #c0392b; }
+    .res__btn svg { transition: transform 0.3s; }
+    .res__btn:hover svg { transform: translateX(5px); }
+
+    .res__details {
+      display: flex;
+      justify-content: center;
+      gap: 4.5rem;
+      margin-top: 4.5rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .res__detail h4 {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.65rem;
+    }
+    .res__detail p { font-size: 0.88rem; line-height: 1.7; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2.5rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer__logo {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+    }
+    .footer__logo em { font-style: italic; color: var(--dim); }
+    .footer__copy { font-size: 0.65rem; color: var(--dim); letter-spacing: 0.05em; }
+    .footer__social { display: flex; gap: 1.5rem; }
+    .footer__social a {
+      font-size: 0.63rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim);
+      transition: color 0.3s;
+    }
+    .footer__social a:hover { color: var(--white); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .story__grid { gap: 4rem; }
+      .pillars__grid { grid-template-columns: 1fr; }
+      .menu__grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 5.5rem 1.25rem; }
+      nav { padding: 1.25rem 1.25rem; }
+      nav.scrolled { padding: 0.9rem 1.25rem; }
+      .nav__links, .nav__cta { display: none; }
+      .hamburger { display: flex; }
+
+      .hero { padding: 0 1.25rem 3rem; }
+      .hero__scroll { display: none; }
+
+      .story__grid { grid-template-columns: 1fr; gap: 3rem; }
+      .story__img { aspect-ratio: 4/3; }
+
+
+      .res__details { flex-direction: column; gap: 1.75rem; text-align: left; align-items: flex-start; margin-left: auto; margin-right: auto; }
+
+      .footer__inner { flex-direction: column; gap: 1.25rem; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__title { font-size: 3.2rem; }
+      .menu__grid { grid-template-columns: 1fr; }
+      .res__details { align-items: flex-start; max-width: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <span class="loader__word">GGOGI YEON</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav__logo">GGOGI <em>Yeon</em></a>
+    <ul class="nav__links">
+      <li><a href="#story">Story</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#reservation">Reserve</a></li>
+    </ul>
+    <a href="#reservation" class="nav__cta">Reserve a Table</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="nav__overlay" id="navOverlay">
+    <a href="#story"       class="m-link">Story</a>
+    <a href="#menu"        class="m-link">Menu</a>
+    <a href="#gallery"     class="m-link">Gallery</a>
+    <a href="#reservation" class="m-link">Reserve</a>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__bg">
+      <!--
+        ▸ TO ADD VIDEO: delete <div class="hero__ph"> and replace with:
+          <video class="hero__media" autoplay muted loop playsinline>
+            <source src="your-video.mp4" type="video/mp4">
+          </video>
+
+        ▸ TO ADD IMAGE: delete <div class="hero__ph"> and replace with:
+          <img class="hero__media" src="your-image.jpg" alt="Restaurant ambiance">
+      -->
+      <video class="hero__media" autoplay muted loop playsinline>
+        <source src="barbecue.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero__overlay"></div>
+
+    <div class="hero__content" id="heroContent">
+      <h1 class="hero__title">GGOGI<br><em>Yeon</em></h1>
+      <p class="hero__sub">Premium cuts. Charcoal grills. The ritual of Korean BBQ — in the heart of Melbourne.</p>
+      <div class="hero__cta">
+        <a href="#reservation" class="btn btn-fill">Reserve a Table</a>
+        <a href="#menu"        class="btn btn-line">Explore Menu →</a>
+      </div>
+    </div>
+
+    <div class="hero__scroll label">
+      <div class="hero__scroll-bar"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STORY
+  ═══════════════════════════════════════ -->
+  <section id="story">
+    <div class="container">
+      <div class="story__grid">
+
+        <div class="story__img reveal">
+          <!--
+            Replace with: <img class="hero__media" src="story.jpg" alt="Interior">
+            Recommended ratio: 3:4 portrait
+          -->
+          <img class="hero__media" src="butcherman.jpg" alt="Restaurant interior">
+        </div>
+
+        <div class="story__text">
+          <div class="reveal">
+            <span class="label">Our Story</span>
+            <div class="divider"></div>
+            <h2 class="section__title">Fire is<br><em>ritual.</em></h2>
+          </div>
+          <blockquote class="story__quote reveal d1">
+            "Every cut tells a story — of the land, the craft, the hands that raised it."
+          </blockquote>
+          <p class="reveal d2">
+            Born from a love of Korean tradition and Melbourne's relentless culinary spirit,
+            GGOGI YEON brings the ancient ritual of table-side grilling to the heart of the city.
+          </p>
+          <p class="reveal d2">
+            We source premium beef from Victoria's finest farms — dry-aged, hand-sliced, served
+            with eight rotating banchan. Every visit is a performance: flame, smoke, and the quiet joy of gathering.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       THREE PILLARS
+  ═══════════════════════════════════════ -->
+  <section id="pillars">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="label">The Experience</span>
+        <div class="divider"></div>
+        <h2 class="section__title">Three elements.<br><em>One evening.</em></h2>
+      </div>
+      <div class="pillars__grid">
+        <div class="pillar reveal">
+          <img src="pillar1.jpg" alt="Premium Cuts">
+          <div class="pillar__overlay"></div>
+          <div class="pillar__content">
+            <div class="pillar__num">01</div>
+            <h3 class="pillar__title">Premium Cuts</h3>
+            <p class="pillar__desc">Wagyu, Black Angus, and heritage pork — sourced from Victoria's finest farms. Every piece hand-selected and dry-aged in-house.</p>
+          </div>
+        </div>
+        <div class="pillar reveal d1">
+          <img src="pillar2.jpg" alt="Charcoal Grills">
+          <div class="pillar__overlay"></div>
+          <div class="pillar__content">
+            <div class="pillar__num">02</div>
+            <h3 class="pillar__title">Charcoal Grills</h3>
+            <p class="pillar__desc">Binchotan white charcoal, set into each table. The cleanest burn, the deepest flavour. You cook it, you own it.</p>
+          </div>
+        </div>
+        <div class="pillar reveal d2">
+          <img src="pillar3.jpg" alt="Banchan Culture">
+          <div class="pillar__overlay"></div>
+          <div class="pillar__content">
+            <div class="pillar__num">03</div>
+            <h3 class="pillar__title">Banchan Culture</h3>
+            <p class="pillar__desc">An ever-changing selection of eight house-made side dishes — kimchi, japchae, seasoned vegetables — served with every meal.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MENU
+  ═══════════════════════════════════════ -->
+  <section id="menu">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="label">The Menu</span>
+        <div class="divider"></div>
+        <h2 class="section__title">Curated cuts,<br><em>honest flavour.</em></h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="menu__tabs">
+        <button class="menu__tab active" data-tab="beef">Beef</button>
+        <button class="menu__tab"        data-tab="pork">Pork</button>
+        <button class="menu__tab"        data-tab="sides">Sides &amp; Banchan</button>
+        <button class="menu__tab"        data-tab="drinks">Drinks</button>
+      </div>
+
+      <!-- BEEF -->
+      <div class="menu__panel" id="tab-beef">
+        <div class="menu__grid">
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 7-50.jpg" alt="Wagyu Bulgogi"></div>
+            <div class="menu__info">
+              <div class="menu__name">Wagyu Bulgogi</div>
+              <div class="menu__kr">와규 불고기</div>
+              <div class="menu__desc">Thinly sliced wagyu marinated in pear, soy &amp; sesame. Melts on the grill.</div>
+            </div>
+            <div class="menu__price">$52</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 8-50.jpg" alt="Galbi Short Rib"></div>
+            <div class="menu__info">
+              <div class="menu__name">Galbi Short Rib</div>
+              <div class="menu__kr">갈비</div>
+              <div class="menu__desc">Bone-in Black Angus short rib, scored and slow-marinated for 48 hours.</div>
+            </div>
+            <div class="menu__price">$48</div>
+          </div>
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 9-50.jpg" alt="Chadolbaegi"></div>
+            <div class="menu__info">
+              <div class="menu__name">Chadolbaegi</div>
+              <div class="menu__kr">차돌박이</div>
+              <div class="menu__desc">Paper-thin wagyu brisket. Seared fast, wrapped in perilla with garlic.</div>
+            </div>
+            <div class="menu__price">$38</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 10-50.jpg" alt="Tteok Galbi"></div>
+            <div class="menu__info">
+              <div class="menu__name">Tteok Galbi</div>
+              <div class="menu__kr">떡갈비</div>
+              <div class="menu__desc">Hand-pressed short rib patties glazed with soy and gochujang.</div>
+            </div>
+            <div class="menu__price">$36</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PORK -->
+      <div class="menu__panel hidden" id="tab-pork">
+        <div class="menu__grid">
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 11-50.jpg" alt="Samgyeopsal"></div>
+            <div class="menu__info">
+              <div class="menu__name">Samgyeopsal</div>
+              <div class="menu__kr">삼겹살</div>
+              <div class="menu__desc">Thick-cut heritage pork belly. Crispy skin, rendered fat. The classic.</div>
+            </div>
+            <div class="menu__price">$32</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 12-50.jpg" alt="Moksal"></div>
+            <div class="menu__info">
+              <div class="menu__name">Moksal</div>
+              <div class="menu__kr">목살</div>
+              <div class="menu__desc">Pork neck marbled with fat. Boldest flavour on the grill.</div>
+            </div>
+            <div class="menu__price">$30</div>
+          </div>
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 13-50.jpg" alt="Dwaeji Galbi"></div>
+            <div class="menu__info">
+              <div class="menu__name">Dwaeji Galbi</div>
+              <div class="menu__kr">돼지갈비</div>
+              <div class="menu__desc">Pork spare ribs marinated in house soy glaze. Sweet, smoky, sticky.</div>
+            </div>
+            <div class="menu__price">$28</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 14-50.jpg" alt="Spicy Pork"></div>
+            <div class="menu__info">
+              <div class="menu__name">Spicy Pork</div>
+              <div class="menu__kr">제육볶음</div>
+              <div class="menu__desc">Gochujang-marinated pork shoulder. Heat builds slow on the grill.</div>
+            </div>
+            <div class="menu__price">$26</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDES -->
+      <div class="menu__panel hidden" id="tab-sides">
+        <div class="menu__grid">
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 15-50.jpg" alt="Banchan Set"></div>
+            <div class="menu__info">
+              <div class="menu__name">Banchan Set</div>
+              <div class="menu__kr">반찬</div>
+              <div class="menu__desc">Eight rotating house-made side dishes. Served complimentary with every grill order.</div>
+            </div>
+            <div class="menu__price">Complimentary</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 16-50.jpg" alt="Stone Pot Bibimbap"></div>
+            <div class="menu__info">
+              <div class="menu__name">Stone Pot Bibimbap</div>
+              <div class="menu__kr">돌솥 비빔밥</div>
+              <div class="menu__desc">Seasonal vegetables, crispy rice crust, house gochujang. A meal on its own.</div>
+            </div>
+            <div class="menu__price">$22</div>
+          </div>
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 17-50.jpg" alt="Doenjang Jjigae"></div>
+            <div class="menu__info">
+              <div class="menu__name">Doenjang Jjigae</div>
+              <div class="menu__kr">된장찌개</div>
+              <div class="menu__desc">Fermented soybean broth with tofu, mushroom &amp; zucchini. Stone-pot served.</div>
+            </div>
+            <div class="menu__price">$18</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 18-50.jpg" alt="Kimchi Jeon"></div>
+            <div class="menu__info">
+              <div class="menu__name">Kimchi Jeon</div>
+              <div class="menu__kr">김치전</div>
+              <div class="menu__desc">Crispy kimchi pancake, scallion, sesame dipping sauce.</div>
+            </div>
+            <div class="menu__price">$16</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRINKS -->
+      <div class="menu__panel hidden" id="tab-drinks">
+        <div class="menu__grid">
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 19-50.jpg" alt="Soju Selection"></div>
+            <div class="menu__info">
+              <div class="menu__name">Soju Selection</div>
+              <div class="menu__kr">소주</div>
+              <div class="menu__desc">Classic and flavoured soju. Chamisul, Jinro, Chum Churum.</div>
+            </div>
+            <div class="menu__price">$12</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 20-50.jpg" alt="Makgeolli"></div>
+            <div class="menu__info">
+              <div class="menu__name">Makgeolli</div>
+              <div class="menu__kr">막걸리</div>
+              <div class="menu__desc">Traditional unfiltered rice wine. Served chilled in a ceramic bowl.</div>
+            </div>
+            <div class="menu__price">$14</div>
+          </div>
+          <div class="menu__item reveal">
+            <div class="menu__thumb"><img src="Artboard 21-50.jpg" alt="Korean Highball"></div>
+            <div class="menu__info">
+              <div class="menu__name">Korean Highball</div>
+              <div class="menu__kr">하이볼</div>
+              <div class="menu__desc">Soju, yuzu, ginger beer. House signature. Pairs with everything.</div>
+            </div>
+            <div class="menu__price">$18</div>
+          </div>
+          <div class="menu__item reveal d1">
+            <div class="menu__thumb"><img src="Artboard 22-50.jpg" alt="Sikhye"></div>
+            <div class="menu__info">
+              <div class="menu__name">Sikhye</div>
+              <div class="menu__kr">식혜</div>
+              <div class="menu__desc">Sweet fermented rice punch. Non-alcoholic. Light, cold, ancient.</div>
+            </div>
+            <div class="menu__price">$8</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       GALLERY
+  ═══════════════════════════════════════ -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="label">Gallery</span>
+        <div class="divider"></div>
+        <div class="gallery__head">
+          <svg class="gallery__ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Instagram">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <h2 class="section__title">Moment of <em>pleasure.</em></h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="container"><div class="gallery__accordion reveal">
+      <div class="gallery__panel">
+        <img src="Artboard 23-50.jpg" alt="Gallery 1">
+        <div class="gallery__panel-overlay"></div>
+      </div>
+      <div class="gallery__panel">
+        <img src="Artboard 24-50.jpg" alt="Gallery 2">
+        <div class="gallery__panel-overlay"></div>
+      </div>
+      <div class="gallery__panel">
+        <img src="Artboard 25-50.jpg" alt="Gallery 3">
+        <div class="gallery__panel-overlay"></div>
+      </div>
+      <div class="gallery__panel">
+        <img src="Artboard 26-50.jpg" alt="Gallery 4">
+        <div class="gallery__panel-overlay"></div>
+      </div>
+      <div class="gallery__panel">
+        <img src="Artboard 27-50.jpg" alt="Gallery 5">
+        <div class="gallery__panel-overlay"></div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       RESERVATION
+  ═══════════════════════════════════════ -->
+  <section id="reservation">
+    <div class="res__inner">
+      <div class="reveal">
+        <span class="label">Book a Table</span>
+        <div class="divider" style="margin:1.25rem auto;"></div>
+        <h2 class="res__title">Come<br><em>dine with</em><br>fire.</h2>
+      </div>
+      <p class="res__sub reveal d1">
+        Intimate tables for two. Long tables for groups.<br>Every seat faces the flame.
+      </p>
+      <button class="res__btn reveal d2">
+        Reserve a Table
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="res__details reveal d3">
+        <div class="res__detail">
+          <h4>Address</h4>
+          <p>123 Flinders Lane<br>Melbourne VIC 3000</p>
+        </div>
+        <div class="res__detail">
+          <h4>Hours</h4>
+          <p>Tue – Sun<br>5:30 PM – 11:00 PM</p>
+        </div>
+        <div class="res__detail">
+          <h4>Contact</h4>
+          <p>hello@ggogiyeon.com.au<br>(03) 9000 0000</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer__inner">
+      <div class="footer__logo">GGOGI <em>Yeon</em></div>
+      <div class="footer__copy">© 2025 GGOGI YEON. Melbourne, Australia.</div>
+      <div class="footer__social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════ -->
+  <script>
+    // ── LOADER ──
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      const hero   = document.getElementById('hero');
+      setTimeout(() => {
+        loader.classList.add('out');
+        hero.classList.add('hero-in');
+      }, 1100);
+    });
+
+    // ── NAV SCROLL ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── HAMBURGER / MOBILE NAV ──
+    const hamburger  = document.getElementById('hamburger');
+    const navOverlay = document.getElementById('navOverlay');
+    const mLinks     = document.querySelectorAll('.m-link');
+
+    const closeMenu = () => {
+      hamburger.classList.remove('open');
+      navOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    hamburger.addEventListener('click', () => {
+      const opening = !navOverlay.classList.contains('open');
+      hamburger.classList.toggle('open');
+      navOverlay.classList.toggle('open');
+      document.body.style.overflow = opening ? 'hidden' : '';
+    });
+
+    mLinks.forEach(l => l.addEventListener('click', closeMenu));
+
+    // ── SCROLL REVEAL ──
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // ── MENU TABS ──
+    document.querySelectorAll('.menu__tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.menu__tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.menu__panel').forEach(p => p.classList.add('hidden'));
+
+        tab.classList.add('active');
+        const panel = document.getElementById('tab-' + tab.dataset.tab);
+        panel.classList.remove('hidden');
+
+        // trigger reveal on newly visible items
+        panel.querySelectorAll('.reveal:not(.visible)').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 70);
+        });
+      });
+    });
+
+    // ── HERO PARALLAX ──
+    const heroContent = document.getElementById('heroContent');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const vh = window.innerHeight;
+      if (y < vh) {
+        heroContent.style.transform = `translateY(${y * 0.22}px)`;
+        heroContent.style.opacity = Math.max(0, 1 - y / (vh * 0.65));
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
