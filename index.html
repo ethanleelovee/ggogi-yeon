@@ -646,18 +646,32 @@
     }
 
     @media (max-width: 768px) {
-      .gallery__accordion { height: auto; overflow: visible; }
+      /* Gallery — horizontal scroll carousel */
+      .gallery__accordion {
+        height: auto !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        display: flex !important;
+        flex-direction: row !important;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        gap: 3px;
+      }
       .gallery__panel {
         position: relative !important;
         left: auto !important;
-        width: 100% !important;
-        height: 260px;
+        width: 78vw !important;
+        aspect-ratio: 9/16 !important;
+        height: auto !important;
+        flex-shrink: 0 !important;
         z-index: 1 !important;
         filter: brightness(1) !important;
-        margin-bottom: 3px;
-        display: block;
+        margin-bottom: 0 !important;
+        scroll-snap-align: start;
       }
       .gallery__panel::after { display: none; }
+      /* Hide scrollbar */
+      .gallery__accordion::-webkit-scrollbar { display: none; }
     }
 
     /* ─── RESERVATION ─── */
@@ -761,7 +775,10 @@
       .hero__scroll { display: none; }
 
       .story__grid { grid-template-columns: 1fr; gap: 3rem; }
-      .story__img { aspect-ratio: 4/3; }
+      .story__img { aspect-ratio: 3/4; }
+      .story__img img { object-position: top center; }
+
+      .menu__desc { display: none; }
 
 
       .res__details { flex-direction: column; gap: 1.75rem; text-align: left; align-items: flex-start; margin-left: auto; margin-right: auto; }
