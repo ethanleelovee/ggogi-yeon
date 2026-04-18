@@ -783,13 +783,10 @@
       .story__img img { object-position: top center; }
 
       /* 3번 — 메뉴 모바일 */
-      .menu__desc {
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .menu__item { position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+      .menu__desc { display: none !important; }
+      .menu__item { position: relative; cursor: pointer; align-items: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+      .menu__name { font-size: 1.45rem !important; }
+      .menu__price { font-size: 1.2rem !important; }
       .menu__item.active::after {
         content: '';
         position: absolute;
@@ -816,6 +813,7 @@
       }
 
       /* 2번 — pillar 터치 시 active 상태 */
+      .pillar { touch-action: manipulation; }
       .pillar.active img { transform: scale(1.05); }
       .pillar.active .pillar__overlay {
         background: linear-gradient(
@@ -1341,23 +1339,21 @@
 
     // ── PILLAR & MENU TOUCH (mobile) ──
     if ('ontouchstart' in window) {
-      let touchStartY = 0;
-
+      // Pillar: click works cleanly with touch-action:manipulation in CSS
       document.querySelectorAll('.pillar').forEach(pillar => {
-        pillar.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
-        pillar.addEventListener('touchend', (e) => {
-          if (Math.abs(e.changedTouches[0].clientY - touchStartY) > 10) return;
-          e.preventDefault();
+        pillar.addEventListener('click', () => {
           const isActive = pillar.classList.contains('active');
           document.querySelectorAll('.pillar').forEach(p => p.classList.remove('active'));
           if (!isActive) pillar.classList.add('active');
         });
       });
 
+      // Menu item overlay
+      let touchStartY = 0;
       document.querySelectorAll('.menu__item').forEach(item => {
         item.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
         item.addEventListener('touchend', (e) => {
-          if (Math.abs(e.changedTouches[0].clientY - touchStartY) > 10) return;
+          if (Math.abs(e.changedTouches[0].clientY - touchStartY) > 15) return;
           e.preventDefault();
           const isActive = item.classList.contains('active');
           document.querySelectorAll('.menu__item').forEach(i => i.classList.remove('active'));
