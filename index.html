@@ -1338,12 +1338,15 @@
 
     // ── PILLAR & MENU TOUCH (mobile) ──
     if ('ontouchstart' in window) {
-      // Pillar: touchend + preventDefault blocks iOS ghost click
+      // Pillar: busy flag blocks any second event within 700ms (iOS reflow double-fire)
       document.querySelectorAll('.pillar').forEach(pillar => {
         let startY = 0;
+        let busy = false;
         pillar.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
         pillar.addEventListener('touchend', (e) => {
-          if (Math.abs(e.changedTouches[0].clientY - startY) > 20) return;
+          if (busy || Math.abs(e.changedTouches[0].clientY - startY) > 20) return;
+          busy = true;
+          setTimeout(() => { busy = false; }, 700);
           e.preventDefault();
           const isActive = pillar.classList.contains('active');
           document.querySelectorAll('.pillar').forEach(p => p.classList.remove('active'));
